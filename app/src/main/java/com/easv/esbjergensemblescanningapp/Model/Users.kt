@@ -3,19 +3,16 @@ package com.easv.esbjergensemblescanningapp.Model
 class Users {
 
     var listOfUsers = arrayListOf(
-        BEUser(1, "username1", "password", "Rocio", "Tapia"),
-        BEUser(2, "username2", "password", "Francesco", "Tesolato")
+        BEUser(1, 1111, "Rocio", "Tapia"),
+        BEUser(2, 2222, "Francesco", "Tesolato")
     )
 
-    fun checkUserExists(username: String, password: String): BEUser? {
+    fun checkUserExists(code: Int): BEUser? {
         var i = 0
         listOfUsers.forEach {
-            when (username) {
-                listOfUsers[i].username ->
-                    when (password) {
-                        listOfUsers[i].password ->
+            when (code) {
+                listOfUsers[i].code ->
                             return listOfUsers[i]
-                    }
             }
         }
         i++

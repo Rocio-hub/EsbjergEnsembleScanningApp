@@ -2,8 +2,7 @@ package com.easv.esbjergensemblescanningapp.Model
 
 class BEUser(
   var id: Int,
-  var username: String,
-  var password: String,
+  var code: Int,
   var firstName: String,
   var lastName: String
 )
