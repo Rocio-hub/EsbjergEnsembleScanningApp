@@ -48,15 +48,13 @@ class UserDAO_Impl(context: Context) :
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndex("id"))
-                val username = cursor.getString(cursor.getColumnIndex("username"))
-                val password = cursor.getString(cursor.getColumnIndex("password"))
+                val code = cursor.getString(cursor.getColumnIndex("code"))
                 val firstName = cursor.getString(cursor.getColumnIndex("firstName"))
                 val lastName = cursor.getString(cursor.getColumnIndex("lastName"))
                 userList.add(
                     BEUser(
                         id,
-                        username,
-                        password,
+                        code,
                         firstName,
                         lastName,
                     )
