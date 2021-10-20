@@ -27,11 +27,21 @@
         android:text="Scanning code..."
         android:textColor="@color/black" />
 
+    <TextView
+        android:id="@+id/textView_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scan_label"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="40sp"
+        android:textColor="@color/black" />
+
     <Button
         android:id="@+id/button_newScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scan_label"
+        android:layout_below="@+id/textView_result"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:backgroundTint="#e30713"
