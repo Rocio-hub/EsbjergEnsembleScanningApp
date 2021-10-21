@@ -29,3 +29,5 @@ hs_err_pid*
 .idea/caches/build_file_checksums.ser
 .idea/gradle.xml
 .idea/vcs.xml
+.gradle/6.5/fileHashes/fileHashes.lock
+.idea/caches/build_file_checksums.ser
