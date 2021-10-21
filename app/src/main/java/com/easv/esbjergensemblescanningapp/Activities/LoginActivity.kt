@@ -31,7 +31,7 @@ class LoginActivity: AppCompatActivity() {
             else{
                 textView_error.setVisibility(View.INVISIBLE)
                 if(users.checkUserExists(code)!=null) {
-                    val intent = Intent(this, ScannerActivity::class.java)
+                    val intent = Intent(this, EventListActivity::class.java)
                     startActivity(intent)
                 }
             }
