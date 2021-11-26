@@ -1,8 +1,10 @@
 package com.easv.esbjergensemblescanningapp.Activities
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +16,47 @@ import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.Model.Concert
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_concertlist.*
+import okhttp3.*
+import okio.IOException
 
 class ConcertListActivity : AppCompatActivity() {
 
     private lateinit var concert: Concert
     private lateinit var concertItems : List<BEConcert>
+    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_concertlist)
+
+        val request = Request.Builder()
+                .url("http://publicobject.com/helloworld.txt")
+                .build()
+
+        client.newCall(request).enqueue(object : Callback { //enqueue means that the http request is gonna be enqueued in the processing queue (asynchronous)
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                /*response.use {
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                    for ((name, value) in response.headers) {
+                        println("$name: $value")
+                    }
+
+                    println(response.body!!.string())
+                }*/
+                    if(response.isSuccessful){
+                        var responseBody : ResponseBody? = response.body
+                        if (responseBody != null) {
+                            Log.d(TAG, "onResponse: " + responseBody.string())
+                        }
+                    }
+            }
+        })
+
 
         concert = Concert()
         var concertList = concert.getAllConcerts()
