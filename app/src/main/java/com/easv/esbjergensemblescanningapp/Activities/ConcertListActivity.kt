@@ -10,40 +10,40 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.easv.esbjergensemblescanningapp.Model.BEEvent
-import com.easv.esbjergensemblescanningapp.Model.Events
+import com.easv.esbjergensemblescanningapp.Model.BEConcert
+import com.easv.esbjergensemblescanningapp.Model.Concert
 import com.easv.esbjergensemblescanningapp.R
-import kotlinx.android.synthetic.main.activity_eventlist.*
+import kotlinx.android.synthetic.main.activity_concertlist.*
 
-class EventListActivity : AppCompatActivity() {
+class ConcertListActivity : AppCompatActivity() {
 
-    private lateinit var events: Events
-    private lateinit var eventItems : List<BEEvent>
+    private lateinit var concert: Concert
+    private lateinit var concertItems : List<BEConcert>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_eventlist)
+        setContentView(R.layout.activity_concertlist)
 
-        events = Events()
-        var eventList = events.getAllEvents()
-        listView_eventItems.adapter = EventListAdapter(this, eventList.toTypedArray())
-        listView_eventItems.setOnItemClickListener {
+        concert = Concert()
+        var concertList = concert.getAllConcerts()
+        listView_concertItems.adapter = ConcertListAdapter(this, concertList.toTypedArray())
+        listView_concertItems.setOnItemClickListener {
             parent,
             view,
             position,
-            id -> onEventClick(parent as ListView, view, position)
+            id -> onConcertClick(parent as ListView, view, position)
         }
     }
 
-    private fun onEventClick(parent: ListView?, v: View?, position: Int) {
-        val selectedEvent = position
-        val intent = Intent(this, EventInfoActivity::class.java)
-        intent.putExtra("eventPosition", selectedEvent)
+    private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
+        val selectedConcert = position
+        val intent = Intent(this, ConcertInfoActivity::class.java)
+        intent.putExtra("concertPosition", selectedConcert)
         startActivity(intent)
 
     }
 
-    internal class EventListAdapter(context: Context, private val items: Array<BEEvent>) : ArrayAdapter<BEEvent>(context, 0, items) {
+    internal class ConcertListAdapter(context: Context, private val items: Array<BEConcert>) : ArrayAdapter<BEConcert>(context, 0, items) {
         override fun getView(position: Int, v: View?, parent: ViewGroup) : View {
             var v1: View? = v
             if (v1 == null) {

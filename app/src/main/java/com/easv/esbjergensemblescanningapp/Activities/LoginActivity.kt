@@ -4,19 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.easv.esbjergensemblescanningapp.Model.Users
+import com.easv.esbjergensemblescanningapp.Model.User
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity: AppCompatActivity() {
 
-    private lateinit var users: Users
+    private lateinit var users: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        users = Users()
+        users = User()
 
         textView_error.setVisibility(View.INVISIBLE)
 
@@ -31,7 +31,7 @@ class LoginActivity: AppCompatActivity() {
             else{
                 textView_error.setVisibility(View.INVISIBLE)
                 if(users.checkUserExists(code)!=null) {
-                    val intent = Intent(this, EventListActivity::class.java)
+                    val intent = Intent(this, ConcertListActivity::class.java)
                     startActivity(intent)
                 }
             }

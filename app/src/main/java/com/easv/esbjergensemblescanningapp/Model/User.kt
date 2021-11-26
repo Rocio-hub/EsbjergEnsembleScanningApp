@@ -1,6 +1,6 @@
 package com.easv.esbjergensemblescanningapp.Model
 
-class Users {
+class User {
 
     var listOfUsers = arrayListOf(
         BEUser(1, "1111", "Rocio", "Tapia"),
