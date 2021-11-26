@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EsbjergEnsembleScanningApp">
         <activity android:name=".Activities.ScannerActivity" />
-        <activity android:name=".Activities.EventListActivity" />
+        <activity android:name=".Activities.ConcertListActivity" />
         <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
