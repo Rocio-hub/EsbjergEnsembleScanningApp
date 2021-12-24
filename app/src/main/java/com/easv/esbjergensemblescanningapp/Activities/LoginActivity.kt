@@ -8,7 +8,7 @@ import com.easv.esbjergensemblescanningapp.Model.User
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity: AppCompatActivity() {
+class  LoginActivity: AppCompatActivity() {
 
     private lateinit var users: User
 
@@ -26,16 +26,15 @@ class LoginActivity: AppCompatActivity() {
     private fun onClickOk() {
         if(validateCode()){
             val code = editText_code.text.toString()
-            if(code.isEmpty())
+      /*      if(code.isEmpty())
                 textView_error.setVisibility(View.VISIBLE)
-            else{
+            else{*/
                 textView_error.setVisibility(View.INVISIBLE)
                 if(users.checkUserExists(code)!=null) {
                     val intent = Intent(this, ConcertListActivity::class.java)
                     startActivity(intent)
                 }
             }
-        }
     }
 
     // Checking if the input in form is valid
