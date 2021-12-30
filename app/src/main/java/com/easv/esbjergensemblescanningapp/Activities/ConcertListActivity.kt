@@ -1,6 +1,6 @@
 package com.easv.esbjergensemblescanningapp.Activities
 
-import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -22,16 +22,15 @@ import okio.IOException
 class ConcertListActivity : AppCompatActivity() {
 
     private var concert: Concert = Concert()
+    private lateinit var concertItems : List<BEConcert>
     private val client = OkHttpClient()
-    private lateinit var concertList : List<BEConcert>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_concertlist)
 
         val request = Request.Builder()
-                //.url("http://publicobject.com/helloworld.txt")
-                .url("https://scanningservice-easv.azurewebsites.net/api/concerts")
+                .url("http://publicobject.com/helloworld.txt")
                 .build()
 
         client.newCall(request).enqueue(object : Callback { //enqueue means that the http request is gonna be enqueued in the processing queue (asynchronous)
@@ -42,39 +41,26 @@ class ConcertListActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 /*response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
                     for ((name, value) in response.headers) {
                         println("$name: $value")
                     }
+
                     println(response.body!!.string())
                 }*/
-                if(response.isSuccessful){
-                    var responseBody : ResponseBody? = response.body
-                   // val result: String = Gson().toJson(response.body!!.string())
-                    if (responseBody != null) {
-                        Log.d(ContentValues.TAG, "onResponse: " + responseBody)
-                        println(responseBody::class.simpleName)
+                    if(response.isSuccessful){
+                        var responseBody : ResponseBody? = response.body
+                        if (responseBody != null) {
+                            Log.d(TAG, "onResponse: " + responseBody.string())
+                        }
                     }
-                }
             }
         })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      //  concert = Concert()
         var concertList = concert.getAllConcerts()
+
+
         listView_concertItems.adapter = ConcertListAdapter(this, concertList.toTypedArray())
         listView_concertItems.setOnItemClickListener {
             parent,
@@ -82,15 +68,17 @@ class ConcertListActivity : AppCompatActivity() {
             position,
             id -> onConcertClick(parent as ListView, view, position)
         }
-     //   val intent = Intent(this, GetDataActivity::class.java)
     }
 
-
-
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
-        val selectedConcert = position
+        val concertPosition = position
         val intent = Intent(this, ConcertInfoActivity::class.java)
-        intent.putExtra("concertPosition", selectedConcert)
+        var concertList = concert.getAllConcerts()
+        var selectedConcert : BEConcert = concertList[position as Int]
+
+        intent.putExtra("concertPosition", concertPosition)
+        intent.putExtra("concertId", selectedConcert.id)
+        //intent.putExtra("concertId", concertId)
         startActivity(intent)
 
     }
@@ -110,7 +98,6 @@ class ConcertListActivity : AppCompatActivity() {
             val itemTime = resView.findViewById<TextView>(R.id.textView_time)
             return resView
         }
-
     }
 
 }
