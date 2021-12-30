@@ -21,7 +21,7 @@ import okio.IOException
 
 class ConcertListActivity : AppCompatActivity() {
 
-    private lateinit var concert: Concert
+    private var concert: Concert = Concert()
     private lateinit var concertItems : List<BEConcert>
     private val client = OkHttpClient()
 
@@ -57,9 +57,10 @@ class ConcertListActivity : AppCompatActivity() {
             }
         })
 
-
-        concert = Concert()
+      //  concert = Concert()
         var concertList = concert.getAllConcerts()
+
+
         listView_concertItems.adapter = ConcertListAdapter(this, concertList.toTypedArray())
         listView_concertItems.setOnItemClickListener {
             parent,
@@ -70,9 +71,14 @@ class ConcertListActivity : AppCompatActivity() {
     }
 
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
-        val selectedConcert = position
+        val concertPosition = position
         val intent = Intent(this, ConcertInfoActivity::class.java)
-        intent.putExtra("concertPosition", selectedConcert)
+        var concertList = concert.getAllConcerts()
+        var selectedConcert : BEConcert = concertList[position as Int]
+
+        intent.putExtra("concertPosition", concertPosition)
+        intent.putExtra("concertId", selectedConcert.id)
+        //intent.putExtra("concertId", concertId)
         startActivity(intent)
 
     }
@@ -92,7 +98,6 @@ class ConcertListActivity : AppCompatActivity() {
             val itemTime = resView.findViewById<TextView>(R.id.textView_time)
             return resView
         }
-
     }
 
 }

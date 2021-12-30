@@ -1,4 +1,4 @@
-package com.easv.esbjergensemblescanningapp.Activities
+ package com.easv.esbjergensemblescanningapp.Activities
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
+import com.easv.esbjergensemblescanningapp.Data.IScanDao
+import com.easv.esbjergensemblescanningapp.Data.ScanDao_Impl
+import com.easv.esbjergensemblescanningapp.Model.BEScan
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_scanner.*
 
@@ -17,10 +20,14 @@ private const val CAMERA_REQUEST_CODE = 101
 class ScannerActivity : AppCompatActivity() {
 
     private lateinit var codeScanner: CodeScanner
+    private var scanList :  MutableList<BEScan> = mutableListOf()
+    private lateinit var scanRepo: IScanDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
+
+        scanRepo = ScanDao_Impl(this)
 
         button_newScan.setVisibility(View.GONE)
         button_newScan.setOnClickListener { v -> onClickNewScan() }
@@ -49,8 +56,11 @@ class ScannerActivity : AppCompatActivity() {
 
             decodeCallback = DecodeCallback {
                 runOnUiThread {
-                    var qrCode = Integer.parseInt(it.text)
-                    textView_result.text = "Code: " + qrCode
+                    var qrCode = it.text
+
+                    checkValidQrCode(qrCode)
+
+                  //  textView_result.text = "Code: " + qrCode
                     button_newScan.setVisibility(View.VISIBLE)
                     onPause()
                 }
@@ -62,6 +72,47 @@ class ScannerActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun checkValidQrCode(qrCode: String) {
+         //si existeÇ: fail
+         //si no existe: meter en db
+
+
+        var e = qrCode.substring(qrCode.indexOf("event_id=") + 9)
+        var e1 = e.substring(0, e.indexOf("&"))
+        var eventId = e1.toInt()
+
+        var s = qrCode.substring(qrCode.indexOf("security_code=") + 14)
+        var s1 = s.substring(0, s.indexOf("&"))
+        var securityCode = s1
+
+        var newScan = BEScan(0, eventId, securityCode)
+        var scanList = scanRepo.getScansByConcertId(eventId)
+
+        var fail = false
+        scanList.forEach{
+            if(it.code == securityCode) {
+                fail = true
+                methodFail()
+            }
+        }
+        if(!fail) {
+            scanRepo.insert(newScan)
+            methodSuccess()
+        }
+
+
+
+
+    }
+
+    private fun methodSuccess() {
+        textView_result.text = "SUCCESS"
+    }
+
+    private fun methodFail() {
+        textView_result.text = "Code already scanned"
     }
 
     override fun onResume() {
@@ -102,11 +153,13 @@ class ScannerActivity : AppCompatActivity() {
             CAMERA_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Please, add camera permission to use the scanner. Close and reopen this app to accept the permission.", Toast.LENGTH_SHORT).show()
-                }
-                else{
+                } else {
                     //successful
                 }
             }
         }
     }
+
+
+
 }
