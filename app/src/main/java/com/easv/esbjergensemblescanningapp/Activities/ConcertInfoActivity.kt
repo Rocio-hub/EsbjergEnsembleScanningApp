@@ -19,15 +19,17 @@ class ConcertInfoActivity : AppCompatActivity(){
         button_scan.setOnClickListener { v -> onClickScan() }
 
         var extras: Bundle = intent.extras!!
-        var concertPosition = extras.getSerializable("concertPosition")
-        var concertId = extras.getInt("concertId")
+      //  var concertPosition = extras.getSerializable("concertPosition")
+        var selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
+        //var concertId = extras.getInt("concertId")
 
-        var concertList = concert.getAllConcerts()
-        var selectedConcert : BEConcert = concertList[concertPosition as Int]
+     //   var concertList = concert.getAllConcerts()
+    //    var selectedConcert : BEConcert = concertList[concertPosition as Int]
 
-        textView_date.setText(selectedConcert.Date)
-        textView_title.setText(selectedConcert.title)
-        textView_other.setText(selectedConcert.Time)
+        textView_title.text = selectedConcert.title
+        textView_date.text = selectedConcert.Date
+        textView_other.text = selectedConcert.Time
+
     }
 
     private fun onClickScan() {

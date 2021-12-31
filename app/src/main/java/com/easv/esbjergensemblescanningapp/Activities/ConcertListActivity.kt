@@ -29,24 +29,26 @@ class ConcertListActivity : AppCompatActivity() {
 
 
         listView_concertItem.adapter = ListAdapter(this, allConcerts.toTypedArray())
-    /*    listView_concertItems.setOnItemClickListener {
+        listView_concertItem.setOnItemClickListener {
             parent,
             view,
             position,
             id -> onConcertClick(parent as ListView, view, position)
-        }*/
+        }
     }
 
 
 
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
         val concertPosition = position
-        val intent = Intent(this, ConcertInfoActivity::class.java)
-       // var concertList = concert.getAllConcerts()
- //       var selectedConcert : BEConcert = concertList[position as Int]
 
-        intent.putExtra("concertPosition", concertPosition)
-      //  intent.putExtra("concertId", selectedConcert.id)
+       // var concertList = concert.getAllConcerts()
+        var selectedConcert  = allConcerts[position]
+
+
+        val intent = Intent(this, ConcertInfoActivity::class.java)
+      //  intent.putExtra("concertPosition", concertPosition)
+        intent.putExtra("selectedConcert", selectedConcert)
         //intent.putExtra("concertId", concertId)
         startActivity(intent)
     }
