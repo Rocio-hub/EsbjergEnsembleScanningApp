@@ -3,30 +3,34 @@ package com.easv.esbjergensemblescanningapp.Activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_concertlist.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class ConcertListActivity : AppCompatActivity() {
 
   //  private var concert: Concert = Concert()
   var allConcerts : MutableList<BEConcert> = mutableListOf()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_concertlist)
+
         var extras: Bundle = intent.extras!!
         allConcerts = extras.getSerializable("allConcerts") as ArrayList<BEConcert>
       //  concert = Concert()
     //    var concertList = concert.getAllConcerts()
 
+        toolBar.title = "ESBJERG ENSEMBLE"
+        setSupportActionBar(toolBar)
 
         listView_concertItem.adapter = ListAdapter(this, allConcerts.toTypedArray())
         listView_concertItem.setOnItemClickListener {
@@ -37,7 +41,17 @@ class ConcertListActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.nav_menu, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_stats -> Toast.makeText(this, "OLE LO CARACOLE", Toast.LENGTH_LONG).show()
+        }
+        return true
+    }
 
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
         val concertPosition = position
