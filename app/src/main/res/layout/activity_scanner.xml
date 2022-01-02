@@ -4,48 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2cdcc">
+    android:background="@color/aliceblue">
 
-    <com.budiyev.android.codescanner.CodeScannerView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:id="@+id/scanner_view"
-        app:autoFocusButtonColor="@color/white"
-        app:autoFocusButtonVisible="true"
-        app:flashButtonColor="@color/white"
-        app:flashButtonVisible="true"
-        app:maskColor="#6C000000" />
-
-    <TextView
-        android:id="@+id/scan_label"
+    <RelativeLayout
+        android:id="@+id/layout_scanner"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:id="@+id/scanner_view"
+            app:autoFocusButtonColor="@color/white"
+            app:autoFocusButtonVisible="true"
+            app:flashButtonColor="@color/white"
+            app:flashButtonVisible="true"
+            app:maskColor="#6C000000" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_label"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scanner_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:textSize="40sp"
-        android:text="Scanning code..."
-        android:textColor="@color/black" />
+        android:layout_below="@+id/layout_scanner"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/scan_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:textSize="35sp"
+            android:fontFamily="@font/armata"
+            android:text="Scanning code..."
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/layout_label">
 
     <TextView
         android:id="@+id/textView_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scan_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:textSize="40sp"
+        android:fontFamily="@font/armata"
+        android:textSize="35sp"
         android:textColor="@color/black" />
 
-    <Button
-        android:id="@+id/button_newScan"
-        android:layout_width="wrap_content"
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_result"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="#e30713"
-        android:textSize="24sp"
-        android:text="New scan" />
+        android:layout_below="@+id/layout_error"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_newScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/amaranthred"
+            android:textColor="@color/aliceblue"
+            android:fontFamily="@font/armata"
+            android:padding="30dp"
+            android:text="NEW SCAN"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

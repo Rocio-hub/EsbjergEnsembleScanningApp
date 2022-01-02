@@ -30,7 +30,7 @@ class  LoginActivity: AppCompatActivity() {
 
         users = User()
 
-        textView_error.setVisibility(View.INVISIBLE)
+        textView_error.setVisibility(View.GONE)
 
         button_ok.setOnClickListener { v -> onClickOk() }
     }

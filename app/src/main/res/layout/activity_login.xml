@@ -4,30 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ec1c24">
+    android:background="@color/amaranthred">
 
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="#f2cdcc">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+
+        android:background="@color/aliceblue" >
 
         <RelativeLayout
             android:id="@+id/relative_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_marginTop="15dp"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ee_logo"
-                />
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ee_logo" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -35,65 +34,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/relative_logo"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:foregroundGravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/armata"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="Enter your code to start scanning"
+                    android:textColor="@color/spacecadet"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:text="Enter your code to start scanning"
-                        android:textSize="35sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textView_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="INCORRECT CODE"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/textView_error"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="INCORRECT CODE"
-                        android:textSize="18sp"
-                        />
+                <EditText
+                    android:id="@+id/editText_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:hint="----"
+                    android:inputType="textPassword"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:textSize="40sp" />
 
-                    <EditText
-                        android:id="@+id/editText_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:hint="- - - -"
-                        android:inputType="textPassword"
-                        android:selectAllOnFocus="false"
-                        android:singleLine="false"
-                        android:textColorLink="#FFFFFF"
-                        android:textSize="45sp" />
-
-                    <Button
-                        android:id="@+id/button_ok"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#e30713"
-                        android:layout_marginBottom="16dp"
-                        android:text="OK"
-                        android:textColor="#FFFF"
-                        android:textSize="30sp">
-                    </Button>
-
-                </LinearLayout>
+                <Button
+                    android:id="@+id/button_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/amaranthred"
+                    android:text="OK"
+                    android:textSize="30sp"></Button>
 
             </LinearLayout>
 
