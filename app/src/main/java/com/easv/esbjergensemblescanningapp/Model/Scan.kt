@@ -7,4 +7,4 @@ import androidx.room.PrimaryKey
 data class Scan(@PrimaryKey var id: Int,
                             var concertId: Int,
                             var userId: Int,
-                            var code: String)
+                            var secutiryCode: String)

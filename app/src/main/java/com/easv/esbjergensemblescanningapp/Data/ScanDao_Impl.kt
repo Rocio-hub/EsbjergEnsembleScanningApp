@@ -17,7 +17,7 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
     }
 
     override fun onCreate(db: SQLiteDatabase?) { //Creates the Friend table on runtime with the relevant table columns
-        db?.execSQL("CREATE TABLE ${ScanDao_Impl.DATABASE_SCAN} (id INTEGER PRIMARY KEY, concertId INTEGER, code TEXT)")
+        db?.execSQL("CREATE TABLE ${ScanDao_Impl.DATABASE_SCAN} (id INTEGER PRIMARY KEY, concertId INTEGER, userId INTEGER, securityCode TEXT)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the Friend table in case the Db version is updated
@@ -38,19 +38,21 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
         }
         var id: Int
         var concertId: Int
-        var code: String
+        var userId: Int
+        var securityCode: String
 
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex("id"))
                 concertId = cursor.getInt(cursor.getColumnIndex("concertId"))
-                code = cursor.getString(cursor.getColumnIndex("code"))
+                userId = cursor.getInt(cursor.getColumnIndex("userId"))
+                securityCode = cursor.getString(cursor.getColumnIndex("securityCode"))
 
                 val neWScan = BEScan(
                     id = id,
                     concertId = concertId,
-                    userId = 5,
-                    code = code,
+                    userId = userId,
+                    securityCode = securityCode,
                 )
                 scanList.add(neWScan)
             } while (cursor.moveToNext())
@@ -64,7 +66,8 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
 
         cv.put("id", s.id)
         cv.put("concertId", s.concertId)
-        cv.put("code", s.code)
+        cv.put("userId", s.userId)
+        cv.put("securityCode", s.securityCode)
 
         db.insert("$DATABASE_SCAN", null, cv)
     }
