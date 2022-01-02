@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.toolbar.*
 class ConcertListActivity : AppCompatActivity() {
 
   //  private var concert: Concert = Concert()
-  var allConcerts : MutableList<BEConcert> = mutableListOf()
+    private var allConcerts : MutableList<BEConcert> = mutableListOf()
+    private var userId : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,7 @@ class ConcertListActivity : AppCompatActivity() {
 
         var extras: Bundle = intent.extras!!
         allConcerts = extras.getSerializable("allConcerts") as ArrayList<BEConcert>
+        userId = extras.getInt("userId")
       //  concert = Concert()
     //    var concertList = concert.getAllConcerts()
 
@@ -47,6 +49,7 @@ class ConcertListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val intent = Intent(this, StatisticsActivity::class.java)
+        intent.putExtra("userId", userId)
         when (item.itemId) {
             R.id.nav_stats ->
                //Toast.makeText(this, "menu item works", Toast.LENGTH_LONG).show()
@@ -65,6 +68,7 @@ class ConcertListActivity : AppCompatActivity() {
         val intent = Intent(this, ConcertInfoActivity::class.java)
       //  intent.putExtra("concertPosition", concertPosition)
         intent.putExtra("selectedConcert", selectedConcert)
+        intent.putExtra("userId", userId)
         //intent.putExtra("concertId", concertId)
         startActivity(intent)
     }

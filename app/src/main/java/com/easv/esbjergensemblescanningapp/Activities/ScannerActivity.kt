@@ -22,10 +22,14 @@ class ScannerActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private var scanList :  MutableList<BEScan> = mutableListOf()
     private lateinit var scanRepo: IScanDao
+    private var userId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
+
+        var extras: Bundle = intent.extras!!
+        userId = extras.getInt("userId")
 
         scanRepo = ScanDao_Impl(this)
 
@@ -87,7 +91,7 @@ class ScannerActivity : AppCompatActivity() {
         var s1 = s.substring(0, s.indexOf("&"))
         var securityCode = s1
 
-        var newScan = BEScan(0, eventId, 0, securityCode)
+        var newScan = BEScan(0, eventId, userId, securityCode)
         var scanList = scanRepo.getScansByConcertId(eventId)
 
         var fail = false
@@ -101,10 +105,6 @@ class ScannerActivity : AppCompatActivity() {
             scanRepo.insert(newScan)
             methodSuccess()
         }
-
-
-
-
     }
 
     private fun methodSuccess() {

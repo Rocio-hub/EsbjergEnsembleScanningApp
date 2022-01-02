@@ -13,9 +13,10 @@ class User {
             when (code) {
                 listOfUsers[i].code ->
                             return listOfUsers[i]
+
             }
+            i++
         }
-        i++
         return null
     }
 

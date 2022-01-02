@@ -14,11 +14,14 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var pieChartView : AnyChartView
     private var scanList : ArrayList<BEScan> = arrayListOf()
-  //  private lateinit var pieChart: PieChart
+    private var userId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
+
+        var extras: Bundle = intent.extras!!
+        userId = extras.getInt("userId")
 
         getMockScans()
 

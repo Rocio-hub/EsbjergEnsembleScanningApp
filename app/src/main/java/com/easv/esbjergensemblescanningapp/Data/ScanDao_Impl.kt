@@ -12,7 +12,7 @@ import com.easv.esbjergensemblescanningapp.Model.BEScan
 class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDao {
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
         private const val DATABASE_SCAN = "Scan"
     }
 

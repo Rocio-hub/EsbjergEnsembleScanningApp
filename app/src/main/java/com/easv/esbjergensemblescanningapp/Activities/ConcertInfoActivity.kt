@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_concertinfo.*
 
 class ConcertInfoActivity : AppCompatActivity(){
     private var concert: Concert = Concert()
+    private var userId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +22,7 @@ class ConcertInfoActivity : AppCompatActivity(){
         var extras: Bundle = intent.extras!!
       //  var concertPosition = extras.getSerializable("concertPosition")
         var selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
+        userId = extras.getInt("userId")
         //var concertId = extras.getInt("concertId")
 
      //   var concertList = concert.getAllConcerts()
@@ -34,6 +36,7 @@ class ConcertInfoActivity : AppCompatActivity(){
 
     private fun onClickScan() {
         val intent = Intent(this, ScannerActivity::class.java)
+        intent.putExtra("userId", userId)
         startActivity(intent)
     }
 }

@@ -21,6 +21,7 @@ class  LoginActivity: AppCompatActivity() {
     private lateinit var users: User
     private val client = OkHttpClient()
     var allConcerts : MutableList<BEConcert> = mutableListOf()
+    private var userId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +43,10 @@ class  LoginActivity: AppCompatActivity() {
             else{*/
                 textView_error.setVisibility(View.INVISIBLE)
                 if(users.checkUserExists(code)!=null) {
+                    userId = users.checkUserExists(code)!!.id
                     val intent = Intent(this, ConcertListActivity::class.java)
                     intent.putExtra("allConcerts", allConcerts as Serializable)
+                    intent.putExtra("userId", userId)
                     startActivity(intent)
                 }
             }
