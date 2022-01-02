@@ -92,7 +92,7 @@ class ScannerActivity : AppCompatActivity() {
 
         var fail = false
         scanList.forEach{
-            if(it.code == securityCode) {
+            if(it.securityCode == securityCode) {
                 fail = true
                 methodFail()
             }
