@@ -49,6 +49,7 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
                 val neWScan = BEScan(
                     id = id,
                     concertId = concertId,
+                    userId = 5,
                     code = code,
                 )
                 scanList.add(neWScan)

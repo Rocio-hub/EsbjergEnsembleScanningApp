@@ -7,7 +7,6 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.R
@@ -47,14 +46,17 @@ class ConcertListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(this, StatisticsActivity::class.java)
         when (item.itemId) {
-            R.id.nav_stats -> Toast.makeText(this, "OLE LO CARACOLE", Toast.LENGTH_LONG).show()
+            R.id.nav_stats ->
+               //Toast.makeText(this, "menu item works", Toast.LENGTH_LONG).show()
+            startActivity(intent)
         }
         return true
     }
 
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
-        val concertPosition = position
+       // val concertPosition = position
 
        // var concertList = concert.getAllConcerts()
         var selectedConcert  = allConcerts[position]

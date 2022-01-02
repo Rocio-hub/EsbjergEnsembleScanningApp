@@ -6,4 +6,5 @@ import androidx.room.PrimaryKey
 @Entity
 data class Scan(@PrimaryKey var id: Int,
                             var concertId: Int,
+                            var userId: Int,
                             var code: String)

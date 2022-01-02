@@ -87,7 +87,7 @@ class ScannerActivity : AppCompatActivity() {
         var s1 = s.substring(0, s.indexOf("&"))
         var securityCode = s1
 
-        var newScan = BEScan(0, eventId, securityCode)
+        var newScan = BEScan(0, eventId, 0, securityCode)
         var scanList = scanRepo.getScansByConcertId(eventId)
 
         var fail = false
