@@ -7,29 +7,15 @@ class User {
         BEUser(2, "2222", "Francesco", "Tesolato")
     )
 
-    fun checkUserExists(code: String): BEUser? {
+    fun checkUserExists(code: String): Boolean {
         var i = 0
         listOfUsers.forEach {
             when (code) {
                 listOfUsers[i].code ->
-                            return listOfUsers[i]
-
+                            return true
             }
             i++
         }
-        return null
-    }
-
-/*    fun checkCodeExists(code: String): Boolean {
-        var i = 0
-        listOfUsers.forEach {
-            when (code) {
-                listOfUsers[i].code ->
-                    return true
-            }
-        }
-        i++
         return false
-    }*/
-
+    }
 }

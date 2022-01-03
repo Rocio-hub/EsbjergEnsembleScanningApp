@@ -14,11 +14,8 @@ import kotlinx.android.synthetic.main.activity_concertlist.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class ConcertListActivity : AppCompatActivity() {
-
-  //  private var concert: Concert = Concert()
     private var allConcerts : MutableList<BEConcert> = mutableListOf()
     private var userId : Int = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +24,6 @@ class ConcertListActivity : AppCompatActivity() {
         var extras: Bundle = intent.extras!!
         allConcerts = extras.getSerializable("allConcerts") as ArrayList<BEConcert>
         userId = extras.getInt("userId")
-      //  concert = Concert()
-    //    var concertList = concert.getAllConcerts()
 
         toolBar.title = "ESBJERG ENSEMBLE"
         setSupportActionBar(toolBar)
@@ -52,24 +47,18 @@ class ConcertListActivity : AppCompatActivity() {
         intent.putExtra("userId", userId)
         when (item.itemId) {
             R.id.nav_stats ->
-               //Toast.makeText(this, "menu item works", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "menu item works", Toast.LENGTH_LONG).show()
             startActivity(intent)
         }
         return true
     }
 
     private fun onConcertClick(parent: ListView?, v: View?, position: Int) {
-       // val concertPosition = position
-
-       // var concertList = concert.getAllConcerts()
         var selectedConcert  = allConcerts[position]
 
-
         val intent = Intent(this, ConcertInfoActivity::class.java)
-      //  intent.putExtra("concertPosition", concertPosition)
         intent.putExtra("selectedConcert", selectedConcert)
         intent.putExtra("userId", userId)
-        //intent.putExtra("concertId", concertId)
         startActivity(intent)
     }
 
@@ -89,12 +78,15 @@ class ConcertListActivity : AppCompatActivity() {
             val itemTitle = resView.findViewById<TextView>(R.id.textView_title)
             itemTitle.text = item.title
             val itemDate = resView.findViewById<TextView>(R.id.textView_date)
-            itemDate.text = item.Date
+            val year = item.Date.dropLast(6)
+            val month1 = item.Date.dropLast(3)
+            val month2 = month1.drop(5)
+            val day = item.Date.drop(8)
+            itemDate.text = day+"/"+month2+"/"+year
             val itemTime = resView.findViewById<TextView>(R.id.textView_time)
-            itemTime.text = item.Time
+            itemTime.text = item.Time.dropLast(3)
 
             return resView
         }
     }
-
 }
