@@ -64,5 +64,4 @@ class UserDAO_Impl(context: Context) :
         return userList
     }
 
-
 }

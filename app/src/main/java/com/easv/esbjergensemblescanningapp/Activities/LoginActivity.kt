@@ -17,15 +17,14 @@ import org.json.JSONTokener
 import java.io.Serializable
 
 class  LoginActivity: AppCompatActivity() {
-
     private lateinit var users: User
-    private val client = OkHttpClient()
+    private var client = OkHttpClient()
     var allConcerts : MutableList<BEConcert> = mutableListOf()
-    private var userId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         getConcertsFromAzure()
 
         users = User()
@@ -36,22 +35,16 @@ class  LoginActivity: AppCompatActivity() {
     }
 
     private fun onClickOk() {
-        if(validateCode()){
-            val code = editText_code.text.toString()
-      /*      if(code.isEmpty())
-                textView_error.setVisibility(View.VISIBLE)
-            else{*/
-                textView_error.setVisibility(View.INVISIBLE)
-                if(users.checkUserExists(code)!=null) {
-                    userId = users.checkUserExists(code)!!.id
-                    val intent = Intent(this, ConcertListActivity::class.java)
-                    intent.putExtra("allConcerts", allConcerts as Serializable)
-                    intent.putExtra("userId", userId)
-                    startActivity(intent)
-                }
-            }
+        val code = editText_code.text.toString()
+        if(validateCode(code)){
+            textView_error.setVisibility(View.INVISIBLE)
+            val intent = Intent(this, ConcertListActivity::class.java)
+            intent.putExtra("allConcerts", allConcerts as Serializable)
+            startActivity(intent)
+        }
     }
-    fun getConcertsFromAzure(){
+
+    private fun getConcertsFromAzure(){
         val request = Request.Builder()
                 .url("https://scanningservice-easv.azurewebsites.net/api/concerts")
                 .build()
@@ -77,19 +70,11 @@ class  LoginActivity: AppCompatActivity() {
                             val date = jsonArray.getJSONObject(i).getString("start_date").split("T")[0]
                             val time = jsonArray.getJSONObject(i).getString("start_date").split("T")[1]
 
-
-                            //    Log.d("AAAAAAAAAA", "Concert " + i)
                             newConcert.id = id.toInt()
-                            //  Log.d("AAAAAAAAAA", newConcert.id.toString())
                             newConcert.title = title
-                            //   Log.d("AAAAAAAAAA", newConcert.title)
                             newConcert.Date = date
-                            //  Log.d("AAAAAAAAAA", newConcert.Date)
                             newConcert.Time = time
-                            //   Log.d("AAAAAAAAAA", newConcert.Time)
-
                             allConcerts.add(newConcert)
-
                         }
                     }
                 }
@@ -97,12 +82,22 @@ class  LoginActivity: AppCompatActivity() {
         })
     }
 
-    // Checking if the input in form is valid
-    fun validateCode(): Boolean {
+    //Check if the input in form is valid
+    private fun validateCode(code: String): Boolean {
+        //Case code empty
         if (editText_code.text.toString() == "") {
+            textView_error.text = "Code cannot be empty."
             textView_error.setVisibility(View.VISIBLE)
             return false
         }
+        //Case code not in db
+        if((!users.checkUserExists(code))){
+            textView_error.text = "Wrong code. Please, try again."
+            textView_error.setVisibility(View.VISIBLE)
+            return false
+        }
+        //Case correct code
         return true
     }
+
 }
