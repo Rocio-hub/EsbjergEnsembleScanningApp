@@ -11,7 +11,6 @@ import com.easv.esbjergensemblescanningapp.Model.BEScan
 import com.easv.esbjergensemblescanningapp.R
 
 class StatisticsActivity : AppCompatActivity() {
-
     private lateinit var pieChartView : AnyChartView
     private var scanList : ArrayList<BEScan> = arrayListOf()
     private var userId : Int = 0
@@ -26,10 +25,8 @@ class StatisticsActivity : AppCompatActivity() {
         getMockScans()
 
         pieChartView = findViewById(R.id.pieChart)
-       // pieChart = findViewById(R.id.pieChart)
-
         initPieChart()
-      //  setDataToPieChart()
+
 
     }
 
@@ -47,7 +44,7 @@ class StatisticsActivity : AppCompatActivity() {
 
 
         scanList.forEach(){
-            var vde : ValueDataEntry = ValueDataEntry("aa", 23)
+            var vde = ValueDataEntry("aa", 23)
           dataEntries.add(vde)
         }
         pie.data(dataEntries)

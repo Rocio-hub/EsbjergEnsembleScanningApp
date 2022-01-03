@@ -11,24 +11,27 @@ import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.easv.esbjergensemblescanningapp.Data.IScanDao
 import com.easv.esbjergensemblescanningapp.Data.ScanDao_Impl
+import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.Model.BEScan
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_scanner.*
 
-private const val CAMERA_REQUEST_CODE = 101
+ private const val CAMERA_REQUEST_CODE = 101
+ private const val ERROR_WRONG_CONCERT = 1
+ private const val ERROR_ALREADY_SCANNED = 2
 
 class ScannerActivity : AppCompatActivity() {
-
     private lateinit var codeScanner: CodeScanner
-    private var scanList :  MutableList<BEScan> = mutableListOf()
     private lateinit var scanRepo: IScanDao
     private var userId : Int = 0
+    private lateinit var selectedConcert : BEConcert
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
 
         var extras: Bundle = intent.extras!!
+        selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
         userId = extras.getInt("userId")
 
         scanRepo = ScanDao_Impl(this)
@@ -61,10 +64,7 @@ class ScannerActivity : AppCompatActivity() {
             decodeCallback = DecodeCallback {
                 runOnUiThread {
                     var qrCode = it.text
-
                     checkValidQrCode(qrCode)
-
-                  //  textView_result.text = "Code: " + qrCode
                     button_newScan.setVisibility(View.VISIBLE)
                     onPause()
                 }
@@ -79,14 +79,11 @@ class ScannerActivity : AppCompatActivity() {
     }
 
     private fun checkValidQrCode(qrCode: String) {
-         //si existeÇ: fail
-         //si no existe: meter en db
-
-
+        //Event ID
         var e = qrCode.substring(qrCode.indexOf("event_id=") + 9)
         var e1 = e.substring(0, e.indexOf("&"))
         var eventId = e1.toInt()
-
+        //Security Code
         var s = qrCode.substring(qrCode.indexOf("security_code=") + 14)
         var s1 = s.substring(0, s.indexOf("&"))
         var securityCode = s1
@@ -94,25 +91,42 @@ class ScannerActivity : AppCompatActivity() {
         var newScan = BEScan(0, eventId, userId, securityCode)
         var scanList = scanRepo.getScansByConcertId(eventId)
 
-        var fail = false
-        scanList.forEach{
-            if(it.securityCode == securityCode) {
-                fail = true
-                methodFail()
+        //selected concert id equals id of scanned code
+        if(selectedConcert.id == eventId){
+            Toast.makeText(this, "Concert ID is correct", Toast.LENGTH_LONG).show()
+
+            var alreadyScanned = false
+            scanList.forEach{
+                if(it.securityCode == securityCode) {
+                    alreadyScanned = true
+                    methodFail(ERROR_ALREADY_SCANNED)
+                }
             }
+            if(!alreadyScanned) {
+                scanRepo.insert(newScan)
+                methodSuccess(eventId)
+            }
+
         }
-        if(!fail) {
-            scanRepo.insert(newScan)
-            methodSuccess()
-        }
+        //selected concert id different id of scanned code
+        else{
+            Toast.makeText(this, "Wrong concert ID", Toast.LENGTH_LONG).show()
+            methodFail(ERROR_WRONG_CONCERT)
+       }
     }
 
-    private fun methodSuccess() {
-        textView_result.text = "SUCCESS"
+    private fun methodSuccess(eventId : Int) {
+        scanRepo.getScansByConcertId(eventId).forEach {
+            Log.d("CONCERTLIST", it.id.toString())
+        }
+        textView_result.text = "New scan inserted in db"
     }
 
-    private fun methodFail() {
-        textView_result.text = "Code already scanned"
+    private fun methodFail(errorCode : Int) {
+        when(errorCode) {
+            1 -> textView_result.text = "The scanned concert ID does not match the chosen concert"
+            2 -> textView_result.text = "Code already scanned"
+        }
     }
 
     override fun onResume() {
@@ -159,7 +173,5 @@ class ScannerActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 }
