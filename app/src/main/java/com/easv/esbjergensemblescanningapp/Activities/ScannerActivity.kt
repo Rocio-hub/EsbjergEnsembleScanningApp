@@ -79,20 +79,20 @@ class ScannerActivity : AppCompatActivity() {
     }
 
     private fun checkValidQrCode(qrCode: String) {
-        //Event ID
-        var e = qrCode.substring(qrCode.indexOf("event_id=") + 9)
-        var e1 = e.substring(0, e.indexOf("&"))
-        var eventId = e1.toInt()
+        //Scanned Concert ID
+        var c = qrCode.substring(qrCode.indexOf("event_id=") + 9)
+        var c1 = c.substring(0, c.indexOf("&"))
+        var concertId = c1.toInt()
         //Security Code
         var s = qrCode.substring(qrCode.indexOf("security_code=") + 14)
         var s1 = s.substring(0, s.indexOf("&"))
         var securityCode = s1
 
-        var newScan = BEScan(0, eventId, userId, securityCode)
-        var scanList = scanRepo.getScansByConcertId(eventId)
+        var newScan = BEScan(0, concertId, userId, securityCode)
+        var scanList = scanRepo.getScansByConcertId(concertId)
 
         //selected concert id equals id of scanned code
-        if(selectedConcert.id == eventId){
+        if(selectedConcert.id == concertId){
             Toast.makeText(this, "Concert ID is correct", Toast.LENGTH_LONG).show()
 
             var alreadyScanned = false
@@ -102,11 +102,10 @@ class ScannerActivity : AppCompatActivity() {
                     methodFail(ERROR_ALREADY_SCANNED)
                 }
             }
-            if(!alreadyScanned) {
+            if(alreadyScanned == false) {
                 scanRepo.insert(newScan)
-                methodSuccess(eventId)
+                methodSuccess(concertId)
             }
-
         }
         //selected concert id different id of scanned code
         else{
