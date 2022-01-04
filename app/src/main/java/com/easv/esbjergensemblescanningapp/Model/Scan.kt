@@ -1,10 +1,9 @@
 package com.easv.esbjergensemblescanningapp.Model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity
-data class Scan(@PrimaryKey var id: Int,
+data class Scan(var id: Int,
                             var concertId: Int,
                             var userId: Int,
                             var secutiryCode: String)

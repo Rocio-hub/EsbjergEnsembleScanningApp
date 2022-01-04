@@ -27,7 +27,7 @@ class ConcertInfoActivity : AppCompatActivity(){
 
         textView_title.text = selectedConcert.title
         textView_date.text = selectedConcert.Date
-        textView_other.text = selectedConcert.Time
+        textView_time.text = selectedConcert.Time
     }
 
     private fun onClickScan() {
