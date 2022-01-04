@@ -27,7 +27,7 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
 
     override fun getScansByConcertId(concertId: Int): List<BEScan> {
         val scanList: ArrayList<BEScan> = ArrayList()
-        val selectQuery = "SELECT  * FROM ${ScanDao_Impl.DATABASE_SCAN}" //WHERE concertId LIKE $concertId"
+        val selectQuery = "SELECT  * FROM ${ScanDao_Impl.DATABASE_SCAN} WHERE concertId LIKE $concertId"
         val db = this.readableDatabase
         var cursor: Cursor? = null
         try {
@@ -70,6 +70,11 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
         cv.put("securityCode", s.securityCode)
 
         db.insert("$DATABASE_SCAN", null, cv)
+    }
+
+    override fun deleteFromDb(concertId: Int) {
+        val db = this.writableDatabase
+        db!!.execSQL("DELDATABASE_$DATABASE_SCAN SCAN WHERE concertId = $concertId")
     }
 
 }

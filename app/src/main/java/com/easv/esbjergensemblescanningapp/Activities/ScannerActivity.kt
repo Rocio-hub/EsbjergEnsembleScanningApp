@@ -172,6 +172,7 @@ class ScannerActivity : AppCompatActivity() {
                 .method("POST", requestBody)
                 .url("https://scanningservice-easv.azurewebsites.net/api/scans")
                 .build()
+
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("ERROR", "Cannot make POST request")
@@ -179,6 +180,7 @@ class ScannerActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 Log.i("OK", "POST request successful")
+                scanRepo.deleteFromDb(scanDTO.concertId)
             }
         })
         super.onStop()
