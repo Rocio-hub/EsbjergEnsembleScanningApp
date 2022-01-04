@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:orientation="horizontal"
+    android:background="@android:drawable/dialog_holo_light_frame"
     android:layout_marginTop="20dp"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp">
@@ -19,9 +20,10 @@
         android:src="@drawable/ee_logo"/>
 
     <LinearLayout
-        android:layout_width="215dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:orientation="vertical">
@@ -30,6 +32,7 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="CONCERT 1"
             android:textStyle="bold" />
 
@@ -37,12 +40,14 @@
             android:id="@+id/textView_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:text="01-01-2021" />
 
         <TextView
             android:id="@+id/textView_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:text="3:00 PM" />
     </LinearLayout>
 
