@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
+import com.easv.esbjergensemblescanningapp.Model.BEUser
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_concertinfo.*
+import java.io.Serializable
 
 
 class ConcertInfoActivity : AppCompatActivity(){
-    private var userId : Int = 0
+    private lateinit var user : BEUser
     private lateinit var selectedConcert : BEConcert
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,7 @@ class ConcertInfoActivity : AppCompatActivity(){
         var extras: Bundle = intent.extras!!
 
         selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
-        userId = extras.getInt("userId")
+        user = extras.getSerializable("user") as BEUser
 
         textView_title.text = selectedConcert.title
         textView_date.text = selectedConcert.Date
@@ -31,7 +33,7 @@ class ConcertInfoActivity : AppCompatActivity(){
     private fun onClickScan() {
         val intent = Intent(this, ScannerActivity::class.java)
         intent.putExtra("selectedConcert", selectedConcert)
-        intent.putExtra("userId", userId)
+        intent.putExtra("user", user as Serializable)
         startActivity(intent)
     }
 }

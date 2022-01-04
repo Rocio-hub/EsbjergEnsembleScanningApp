@@ -1,8 +1,10 @@
 package com.easv.esbjergensemblescanningapp.Model
 
+import java.io.Serializable
+
 class BEUser(
   var id: Int,
-  var code: String,
+  var code: Int,
   var firstName: String,
   var lastName: String
-)
+): Serializable
