@@ -1,6 +1,7 @@
  package com.easv.esbjergensemblescanningapp.Activities
 
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -106,7 +107,6 @@ class ScannerActivity : AppCompatActivity() {
                 scanRepo.insert(newScan)
                 methodSuccess(eventId)
             }
-
         }
         //selected concert id different id of scanned code
         else{
@@ -119,10 +119,15 @@ class ScannerActivity : AppCompatActivity() {
         scanRepo.getScansByConcertId(eventId).forEach {
             Log.d("CONCERTLIST", it.id.toString())
         }
+        layout_below.setBackgroundColor(Color.GREEN)
         textView_result.text = "New scan inserted in db"
     }
 
     private fun methodFail(errorCode : Int) {
+        imageView_mood.setVisibility(View.VISIBLE)
+        imageView_mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
+        layout_below.setBackgroundColor(Color.parseColor("#8D99AE"))
+
         when(errorCode) {
             1 -> textView_result.text = "The scanned concert ID does not match the chosen concert"
             2 -> textView_result.text = "Code already scanned"
@@ -131,11 +136,13 @@ class ScannerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        textView_scanLabel.setVisibility(View.VISIBLE)
         codeScanner.startPreview()
     }
 
     override fun onPause() {
         codeScanner.releaseResources()
+        textView_scanLabel.setVisibility(View.GONE)
         super.onPause()
     }
 

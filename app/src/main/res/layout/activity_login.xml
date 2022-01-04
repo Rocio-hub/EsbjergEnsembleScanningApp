@@ -74,10 +74,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:hint="----"
+                    android:inputType="numberPassword"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:hint="----"
-                    android:inputType="textPassword"
                     android:selectAllOnFocus="false"
                     android:singleLine="false"
                     android:textSize="40sp" />
