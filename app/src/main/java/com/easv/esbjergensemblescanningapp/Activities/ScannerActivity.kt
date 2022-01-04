@@ -156,7 +156,7 @@ class ScannerActivity : AppCompatActivity() {
         var scanDTO = ScanDTO(0,0,"")
         var scanDTOList : MutableList<ScanDTO> = mutableListOf()
 
-        scanRepo.getScansByConcertId(123).forEach{
+        scanRepo.getScansByConcertId(selectedConcert.id).forEach{
             scanDTO.concertId = it.concertId
             scanDTO.securityCode = it.securityCode
             scanDTO.userId = it.userId
@@ -180,6 +180,7 @@ class ScannerActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 Log.i("OK", "POST request successful")
+                Log.i("AAA", scanDTOJson.toString())
                 scanRepo.deleteFromDb(scanDTO.concertId)
             }
         })

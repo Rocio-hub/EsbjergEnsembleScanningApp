@@ -64,7 +64,6 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
         val db = this.writableDatabase
         val cv = ContentValues()
 
-        cv.put("id", s.id)
         cv.put("concertId", s.concertId)
         cv.put("userId", s.userId)
         cv.put("securityCode", s.securityCode)
@@ -74,7 +73,7 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
 
     override fun deleteFromDb(concertId: Int) {
         val db = this.writableDatabase
-        db!!.execSQL("DELDATABASE_$DATABASE_SCAN SCAN WHERE concertId = $concertId")
+        db!!.execSQL("DELETE FROM $DATABASE_SCAN WHERE concertId = $concertId")
     }
 
 }
