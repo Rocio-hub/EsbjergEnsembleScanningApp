@@ -12,7 +12,7 @@ import com.easv.esbjergensemblescanningapp.Model.BEScan
 class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDao {
 
     companion object {
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 4
         private const val DATABASE_SCAN = "Scan"
     }
 
@@ -64,12 +64,16 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
         val db = this.writableDatabase
         val cv = ContentValues()
 
-        cv.put("id", s.id)
         cv.put("concertId", s.concertId)
         cv.put("userId", s.userId)
         cv.put("securityCode", s.securityCode)
 
         db.insert("$DATABASE_SCAN", null, cv)
+    }
+
+    override fun deleteFromDb(concertId: Int) {
+        val db = this.writableDatabase
+        db!!.execSQL("DELETE FROM $DATABASE_SCAN WHERE concertId = $concertId")
     }
 
 }

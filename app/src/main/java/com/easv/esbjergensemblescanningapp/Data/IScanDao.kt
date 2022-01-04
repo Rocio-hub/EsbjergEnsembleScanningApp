@@ -7,4 +7,6 @@ interface IScanDao {
     fun getScansByConcertId(concertId: Int): List<BEScan>
 
     fun insert(s: BEScan)
+
+    fun deleteFromDb(concertId: Int)
 }

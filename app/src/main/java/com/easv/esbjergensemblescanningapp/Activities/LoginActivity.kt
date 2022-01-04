@@ -1,9 +1,7 @@
 package com.easv.esbjergensemblescanningapp.Activities
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
@@ -26,7 +24,6 @@ class  LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         getConcertsFromAzure()
-
         users = User()
 
         textView_error.setVisibility(View.GONE)
@@ -40,6 +37,7 @@ class  LoginActivity: AppCompatActivity() {
             textView_error.setVisibility(View.INVISIBLE)
             val intent = Intent(this, ConcertListActivity::class.java)
             intent.putExtra("allConcerts", allConcerts as Serializable)
+            intent.putExtra("userId", 1)
             startActivity(intent)
         }
     }
@@ -59,7 +57,7 @@ class  LoginActivity: AppCompatActivity() {
                 if(response.isSuccessful){
                     var responseBody : String? = response.body?.string()
                     if (responseBody != null) {
-                        Log.d(ContentValues.TAG, "onResponse: " + responseBody)
+                        //Log.d(ContentValues.TAG, "onResponse: " + responseBody)
 
                         val jsonArray = JSONTokener(responseBody).nextValue() as JSONArray
                         for (i in 0 until jsonArray.length()) {

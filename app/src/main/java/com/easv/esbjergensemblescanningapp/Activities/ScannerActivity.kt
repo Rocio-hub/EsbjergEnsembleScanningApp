@@ -14,8 +14,13 @@ import com.easv.esbjergensemblescanningapp.Data.IScanDao
 import com.easv.esbjergensemblescanningapp.Data.ScanDao_Impl
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.Model.BEScan
+import com.easv.esbjergensemblescanningapp.Model.ScanDTO
 import com.easv.esbjergensemblescanningapp.R
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_scanner.*
+import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
 
  private const val CAMERA_REQUEST_CODE = 101
  private const val ERROR_WRONG_CONCERT = 1
@@ -146,6 +151,42 @@ class ScannerActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    override fun onStop() {
+        val gson = Gson()
+        var scanDTO = ScanDTO(0,0,"")
+        var scanDTOList : MutableList<ScanDTO> = mutableListOf()
+
+        scanRepo.getScansByConcertId(selectedConcert.id).forEach{
+            scanDTO.concertId = it.concertId
+            scanDTO.securityCode = it.securityCode
+            scanDTO.userId = it.userId
+
+            scanDTOList.add(scanDTO)
+        }
+
+        val scanDTOJson = gson.toJson(scanDTOList)
+
+        val okHttpClient = OkHttpClient()
+        val requestBody = scanDTOJson.toRequestBody()
+        val request = Request.Builder()
+                .method("POST", requestBody)
+                .url("https://scanningservice-easv.azurewebsites.net/api/scans")
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("ERROR", "Cannot make POST request")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                Log.i("OK", "POST request successful")
+                Log.i("AAA", scanDTOJson.toString())
+                scanRepo.deleteFromDb(scanDTO.concertId)
+            }
+        })
+        super.onStop()
+    }
+
     private fun setUpPermissions() {
         val permission = ContextCompat.checkSelfPermission(
                 this,
@@ -175,7 +216,7 @@ class ScannerActivity : AppCompatActivity() {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Please, add camera permission to use the scanner. Close and reopen this app to accept the permission.", Toast.LENGTH_SHORT).show()
                 } else {
-                    //successful
+                    Log.i("OK", "Camera request successful")
                 }
             }
         }
