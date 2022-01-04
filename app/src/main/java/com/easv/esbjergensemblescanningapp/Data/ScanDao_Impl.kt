@@ -12,7 +12,7 @@ import com.easv.esbjergensemblescanningapp.Model.BEScan
 class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDao {
 
     companion object {
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 4
         private const val DATABASE_SCAN = "Scan"
     }
 
@@ -27,7 +27,7 @@ class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
 
     override fun getScansByConcertId(concertId: Int): List<BEScan> {
         val scanList: ArrayList<BEScan> = ArrayList()
-        val selectQuery = "SELECT  * FROM ${ScanDao_Impl.DATABASE_SCAN} WHERE concertId LIKE $concertId"
+        val selectQuery = "SELECT  * FROM ${ScanDao_Impl.DATABASE_SCAN}" //WHERE concertId LIKE $concertId"
         val db = this.readableDatabase
         var cursor: Cursor? = null
         try {

@@ -26,10 +26,10 @@ class  LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         getConcertsFromAzure()
-
         users = User()
 
         textView_error.setVisibility(View.GONE)
+
 
         button_ok.setOnClickListener { v -> onClickOk() }
     }
