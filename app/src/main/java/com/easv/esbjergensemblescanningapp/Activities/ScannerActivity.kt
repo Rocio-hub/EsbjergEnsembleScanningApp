@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
-import com.easv.esbjergensemblescanningapp.Data.IScanDao
-import com.easv.esbjergensemblescanningapp.Data.ScanDao_Impl
+import com.easv.esbjergensemblescanningapp.Data.IScanDAO
+import com.easv.esbjergensemblescanningapp.Data.ScanDAO_Impl
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
 import com.easv.esbjergensemblescanningapp.Model.BEScan
+import com.easv.esbjergensemblescanningapp.Model.BEUser
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_scanner.*
 
@@ -22,8 +23,8 @@ import kotlinx.android.synthetic.main.activity_scanner.*
 
 class ScannerActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
-    private lateinit var scanRepo: IScanDao
-    private var userId : Int = 0
+    private lateinit var scanRepo: IScanDAO
+    private lateinit var user : BEUser
     private lateinit var selectedConcert : BEConcert
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +33,9 @@ class ScannerActivity : AppCompatActivity() {
 
         var extras: Bundle = intent.extras!!
         selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
-        userId = extras.getInt("userId")
+        user = extras.getSerializable("user") as BEUser
 
-        scanRepo = ScanDao_Impl(this)
+        scanRepo = ScanDAO_Impl(this)
 
         button_newScan.setVisibility(View.GONE)
         button_newScan.setOnClickListener { v -> onClickNewScan() }
@@ -88,7 +89,7 @@ class ScannerActivity : AppCompatActivity() {
         var s1 = s.substring(0, s.indexOf("&"))
         var securityCode = s1
 
-        var newScan = BEScan(0, concertId, userId, securityCode)
+        var newScan = BEScan(0, concertId, user.id, securityCode)
         var scanList = scanRepo.getScansByConcertId(concertId)
 
         //selected concert id equals id of scanned code

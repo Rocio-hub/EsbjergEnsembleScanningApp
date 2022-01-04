@@ -9,27 +9,27 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.easv.esbjergensemblescanningapp.Model.BEScan
 
 
-class ScanDao_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDao {
+class ScanDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDAO {
 
     companion object {
         private const val DATABASE_VERSION = 3
         private const val DATABASE_SCAN = "Scan"
     }
 
-    override fun onCreate(db: SQLiteDatabase?) { //Creates the Friend table on runtime with the relevant table columns
-        db?.execSQL("CREATE TABLE ${ScanDao_Impl.DATABASE_SCAN} (id INTEGER PRIMARY KEY, concertId INTEGER, userId INTEGER, securityCode TEXT)")
+    override fun onCreate(db: SQLiteDatabase?) { //Creates the table on runtime with the relevant table columns
+        db?.execSQL("CREATE TABLE $DATABASE_SCAN (id INTEGER PRIMARY KEY, concertId INTEGER, userId INTEGER, securityCode TEXT)")
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the Friend table in case the Db version is updated
-        db!!.execSQL("DROP TABLE IF EXISTS ${ScanDao_Impl.DATABASE_SCAN}")
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the table in case the Db version is updated
+        db!!.execSQL("DROP TABLE IF EXISTS $DATABASE_SCAN")
         onCreate(db)
     }
 
     override fun getScansByConcertId(concertId: Int): List<BEScan> {
         val scanList: ArrayList<BEScan> = ArrayList()
-        val selectQuery = "SELECT  * FROM ${ScanDao_Impl.DATABASE_SCAN} WHERE concertId LIKE $concertId"
+        val selectQuery = "SELECT  * FROM $DATABASE_SCAN WHERE concertId LIKE $concertId"
         val db = this.readableDatabase
-        var cursor: Cursor? = null
+        var cursor: Cursor?
         try {
             cursor = db.rawQuery(selectQuery, null)
         } catch (e: SQLiteException) {

@@ -1,67 +1,72 @@
 package com.easv.esbjergensemblescanningapp.Data
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.easv.esbjergensemblescanningapp.Model.BEUser
 
-class UserDAO_Impl(context: Context) :
-    SQLiteOpenHelper(context, "ScannerAppDB", null, 20), IUserDAO {
+class UserDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_USER, null, DATABASE_VERSION), IUserDAO {
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE AdminUser (id INTEGER PRIMARY KEY, username TEXT, password TEXT, firstName TEXT, lastName TEXT)")
+    companion object {
+        private const val DATABASE_VERSION = 1
+        private const val DATABASE_USER = "User"
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db!!.execSQL("DROP TABLE IF EXISTS " + "AdminUser")
+    override fun onCreate(db: SQLiteDatabase?) { //Creates the table on runtime with the relevant table columns
+        db?.execSQL("CREATE TABLE ${UserDAO_Impl.DATABASE_USER} (id INTEGER PRIMARY KEY, code INTEGER, firstName INTEGER, lastName TEXT)")
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the Friend table in case the Db version is updated
+        db!!.execSQL("DROP TABLE IF EXISTS ${UserDAO_Impl.DATABASE_USER}")
         onCreate(db)
     }
 
-    override fun login(username: String, password: String): BEUser? {
+    override fun login(code: Int): BEUser? {
         val db = this.readableDatabase
-        var cursor = db.query(
-            "AdminUser",
-            arrayOf(
-                "id",
-                "username",
-                "password",
-                "firstname",
-                "lastname"
-            ),
-            "username LIKE '$username' AND password LIKE '$password'",
-            null,
-            null,
-            null,
-            null
-        )
-        var userList: List<BEUser> = getUserByCursor(cursor)
-        if(userList.isNotEmpty()) {
-            return userList[0]
+        var cursor = db.query("User",arrayOf("id","code","firstName","lastName"),
+                    "code LIKE '$code'",
+                    null,null, null,null)
+        var myList: List<BEUser> = getByCursor(cursor)
+        if (myList.isNotEmpty()) {
+            return myList[0]
         } else {
-        return null
+            return null
         }
     }
 
-    private fun getUserByCursor(cursor: Cursor): List<BEUser> {
-        val userList = ArrayList<BEUser>()
+    //IMPlEMENTAR
+ /*   override fun checkIfUserExists(email: String): BEUser {
+        val db = this.readableDatabase
+        var cursor = db.query("$DATABASE_USER", arrayOf("id","name","email","password","stepCoins","totalSteps","multiplier","fortressLvl","wallLvl","weaponsLvl","picture"),"email LIKE '%$email%'",null,null,null,"id")
+        var result = getByCursor(cursor)
+        return result
+    }*/
+
+    private fun getByCursor(cursor: Cursor): List<BEUser> {
+        val myList = ArrayList<BEUser>()
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndex("id"))
-                val code = cursor.getString(cursor.getColumnIndex("code"))
+                val code = cursor.getInt(cursor.getColumnIndex("code"))
                 val firstName = cursor.getString(cursor.getColumnIndex("firstName"))
                 val lastName = cursor.getString(cursor.getColumnIndex("lastName"))
-                userList.add(
-                    BEUser(
-                        id,
-                        code,
-                        firstName,
-                        lastName,
-                    )
-                )
+                myList.add(BEUser(id, code, firstName, lastName))
             } while (cursor.moveToNext())
         }
-        return userList
+        return myList
+    }
+    override fun insert(u: BEUser) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+
+        cv.put("id", u.id)
+        cv.put("code", u.code)
+        cv.put("firstName", u.firstName)
+        cv.put("lastName", u.lastName)
+
+        db.insert("${DATABASE_USER}", null, cv)
     }
 
 }

@@ -8,26 +8,25 @@ import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
 import com.easv.esbjergensemblescanningapp.Model.BEScan
+import com.easv.esbjergensemblescanningapp.Model.BEUser
 import com.easv.esbjergensemblescanningapp.R
 
 class StatisticsActivity : AppCompatActivity() {
     private lateinit var pieChartView : AnyChartView
     private var scanList : ArrayList<BEScan> = arrayListOf()
-    private var userId : Int = 0
+    private lateinit var user : BEUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
 
         var extras: Bundle = intent.extras!!
-        userId = extras.getInt("userId")
+        user = extras.getSerializable("user") as BEUser
 
         getMockScans()
 
         pieChartView = findViewById(R.id.pieChart)
         initPieChart()
-
-
     }
 
     private fun getMockScans() {

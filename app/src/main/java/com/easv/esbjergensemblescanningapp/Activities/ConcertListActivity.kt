@@ -9,13 +9,15 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.easv.esbjergensemblescanningapp.Model.BEConcert
+import com.easv.esbjergensemblescanningapp.Model.BEUser
 import com.easv.esbjergensemblescanningapp.R
 import kotlinx.android.synthetic.main.activity_concertlist.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.io.Serializable
 
 class ConcertListActivity : AppCompatActivity() {
     private var allConcerts : MutableList<BEConcert> = mutableListOf()
-    private var userId : Int = 0
+    private lateinit var user : BEUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class ConcertListActivity : AppCompatActivity() {
 
         var extras: Bundle = intent.extras!!
         allConcerts = extras.getSerializable("allConcerts") as ArrayList<BEConcert>
-        userId = extras.getInt("userId")
+        user = extras.getSerializable("user") as BEUser
 
         toolBar.title = "ESBJERG ENSEMBLE"
         setSupportActionBar(toolBar)
@@ -44,7 +46,7 @@ class ConcertListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val intent = Intent(this, StatisticsActivity::class.java)
-        intent.putExtra("userId", userId)
+        intent.putExtra("user", user as Serializable)
         when (item.itemId) {
             R.id.nav_stats ->
             //Toast.makeText(this, "menu item works", Toast.LENGTH_LONG).show()
@@ -58,7 +60,7 @@ class ConcertListActivity : AppCompatActivity() {
 
         val intent = Intent(this, ConcertInfoActivity::class.java)
         intent.putExtra("selectedConcert", selectedConcert)
-        intent.putExtra("userId", userId)
+        intent.putExtra("user", user as Serializable)
         startActivity(intent)
     }
 
