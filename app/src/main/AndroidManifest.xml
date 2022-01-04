@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EsbjergEnsembleScanningApp">
         <activity android:name=".Activities.StatisticsActivity"></activity>
-        <activity android:name=".Activities.GetDataActivity" />
         <activity android:name=".Activities.ScannerActivity" />
         <activity android:name=".Activities.ConcertListActivity" />
         <activity android:name=".Activities.ConcertInfoActivity" />
