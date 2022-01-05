@@ -6,4 +6,4 @@ import androidx.room.Entity
 data class Scan(var id: Int,
                             var concertId: Int,
                             var userId: Int,
-                            var secutiryCode: String)
+                            var securityCode: String)
