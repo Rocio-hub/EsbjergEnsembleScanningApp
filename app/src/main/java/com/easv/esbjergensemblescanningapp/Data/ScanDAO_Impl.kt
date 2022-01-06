@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import com.easv.esbjergensemblescanningapp.Model.BEScan
 
-
 class ScanDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN, null, DATABASE_VERSION), IScanDAO {
 
     companion object {
@@ -75,5 +74,4 @@ class ScanDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_SCAN,
         val db = this.writableDatabase
         db!!.execSQL("DELETE FROM $DATABASE_SCAN WHERE concertId = $concertId")
     }
-
 }

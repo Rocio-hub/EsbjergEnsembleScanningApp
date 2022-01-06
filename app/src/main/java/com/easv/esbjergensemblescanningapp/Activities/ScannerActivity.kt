@@ -44,12 +44,6 @@ class ScannerActivity : AppCompatActivity() {
         codeScanner()
     }
 
-    private fun onClickNewScan() {
-        textView_result.text = ""
-        button_newScan.setVisibility(View.GONE)
-        onResume()
-    }
-
     private fun codeScanner() {
         codeScanner = CodeScanner(this, scanner_view)
 
@@ -79,6 +73,12 @@ class ScannerActivity : AppCompatActivity() {
         }
     }
 
+    private fun onClickNewScan() {
+        textView_result.text = ""
+        button_newScan.setVisibility(View.GONE)
+        onResume()
+    }
+
     private fun checkValidQrCode(qrCode: String) {
         //Scanned Concert ID
         var c = qrCode.substring(qrCode.indexOf("event_id=") + 9)
@@ -94,7 +94,7 @@ class ScannerActivity : AppCompatActivity() {
 
         //selected concert id equals id of scanned code
         if(selectedConcert.id == concertId){
-            Toast.makeText(this, "Concert ID is correct", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Concert ID is correct", Toast.LENGTH_LONG).show()
 
             var alreadyScanned = false
             scanList.forEach{
@@ -110,7 +110,7 @@ class ScannerActivity : AppCompatActivity() {
         }
         //selected concert id different id of scanned code
         else{
-            Toast.makeText(this, "Wrong concert ID", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Wrong concert ID", Toast.LENGTH_LONG).show()
             methodFail(ERROR_WRONG_CONCERT)
        }
     }
@@ -173,9 +173,4 @@ class ScannerActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
 }

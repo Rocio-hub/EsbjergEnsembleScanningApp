@@ -20,21 +20,22 @@ import org.json.JSONArray
 import org.json.JSONTokener
 import java.io.Serializable
 
-class  LoginActivity: AppCompatActivity() {
+class LoginActivity: AppCompatActivity() {
     private lateinit var userRepo: IUserDAO
     private var client = OkHttpClient()
-    var allConcerts : MutableList<BEConcert> = mutableListOf()
+    private var allConcerts : MutableList<BEConcert> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        getConcertsFromAzure()
+
+        getUpcomingConcertsFromAzure()
         userRepo = UserDAO_Impl(this)
 
         textView_error.setVisibility(View.INVISIBLE)
-
         button_ok.setOnClickListener { v -> onClickOk() }
 
+        //Get users only when opening the app for the first time
         var wmbPreference: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         var isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
         val editor = wmbPreference.edit()
@@ -43,6 +44,44 @@ class  LoginActivity: AppCompatActivity() {
             editor.putBoolean("FIRSTRUN", false);
             editor.apply();
         }
+    }
+
+    private fun getUpcomingConcertsFromAzure(){
+        val request = Request.Builder()
+                .url("https://scanningsystem-easv.azurewebsites.net/api/concerts")
+                .build()
+
+        client.newCall(request).enqueue(object : Callback { //enqueue means that the http request is gonna be enqueued in the processing queue (asynchronous)
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+                if (response.isSuccessful) {
+                    var responseBody: String? = response.body?.string()
+                    if (responseBody != null) {
+                        Log.d(ContentValues.TAG, "onResponse: " + responseBody)
+
+                        val jsonArray = JSONTokener(responseBody).nextValue() as JSONArray
+                        for (i in 0 until jsonArray.length()) {
+                            var newConcert = BEConcert(0, "", "", "")
+
+                            val id = jsonArray.getJSONObject(i).getString("id")
+                            val title = jsonArray.getJSONObject(i).getString("title")
+                            val date = jsonArray.getJSONObject(i).getString("start_date").split("T")[0]
+                            val time = jsonArray.getJSONObject(i).getString("start_date").split("T")[1]
+
+                            newConcert.id = id.toInt()
+                            newConcert.title = title
+                            newConcert.Date = date
+                            newConcert.Time = time
+                            allConcerts.add(newConcert)
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun getUsersFromAzure() {
@@ -94,44 +133,6 @@ class  LoginActivity: AppCompatActivity() {
         }
     }
 
-    private fun getConcertsFromAzure(){
-        val request = Request.Builder()
-                .url("https://scanningsystem-easv.azurewebsites.net/api/concerts")
-                .build()
-
-        client.newCall(request).enqueue(object : Callback { //enqueue means that the http request is gonna be enqueued in the processing queue (asynchronous)
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-
-                if (response.isSuccessful) {
-                    var responseBody: String? = response.body?.string()
-                    if (responseBody != null) {
-                        Log.d(ContentValues.TAG, "onResponse: " + responseBody)
-
-                        val jsonArray = JSONTokener(responseBody).nextValue() as JSONArray
-                        for (i in 0 until jsonArray.length()) {
-                            var newConcert = BEConcert(0, "", "", "")
-
-                            val id = jsonArray.getJSONObject(i).getString("id")
-                            val title = jsonArray.getJSONObject(i).getString("title")
-                            val date = jsonArray.getJSONObject(i).getString("start_date").split("T")[0]
-                            val time = jsonArray.getJSONObject(i).getString("start_date").split("T")[1]
-
-                            newConcert.id = id.toInt()
-                            newConcert.title = title
-                            newConcert.Date = date
-                            newConcert.Time = time
-                            allConcerts.add(newConcert)
-                        }
-                    }
-                }
-            }
-        })
-    }
-
     //Check if the input in form is valid
     private fun validateCode(codeString: String): BEUser? {
         var code = 0
@@ -139,13 +140,13 @@ class  LoginActivity: AppCompatActivity() {
              code = codeString.toInt()
         }
         catch (e: Exception){
-            //Case code empty
+            //CASE: Code empty
             if (editText_code.text.toString() == "") {
                 textView_error.text = "Code cannot be empty."
                 textView_error.setVisibility(View.VISIBLE)
                 return null
             }
-            //Case code with letters or symbols
+            //CASE: Code with letters or symbols
             else{
                 textView_error.text = "Wrong code. Please, try again."
                 textView_error.setVisibility(View.VISIBLE)
@@ -154,14 +155,13 @@ class  LoginActivity: AppCompatActivity() {
         }
         var userLogged = userRepo.login(code)
 
-        //Case code not in db
+        //CASE: Code not in db
         if(userLogged==null){
             textView_error.text = "Wrong code. Please, try again."
             textView_error.setVisibility(View.VISIBLE)
             return null
         }
-        //Case correct code
+        //CASE: Correct code
         return userLogged
     }
-
 }

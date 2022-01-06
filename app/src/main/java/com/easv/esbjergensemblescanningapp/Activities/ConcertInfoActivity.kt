@@ -21,7 +21,6 @@ class ConcertInfoActivity : AppCompatActivity(){
         button_scan.setOnClickListener { v -> onClickScan() }
 
         var extras: Bundle = intent.extras!!
-
         selectedConcert = extras.getSerializable("selectedConcert") as BEConcert
         user = extras.getSerializable("user") as BEUser
 

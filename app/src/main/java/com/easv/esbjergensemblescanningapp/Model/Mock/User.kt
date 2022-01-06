@@ -1,8 +1,10 @@
-package com.easv.esbjergensemblescanningapp.Model
+package com.easv.esbjergensemblescanningapp.Model.Mock
+
+import com.easv.esbjergensemblescanningapp.Model.BEUser
 
 class User {
 
-    var listOfUsers = arrayListOf(
+    private var listOfUsers = arrayListOf(
         BEUser(1, 1111, "Rocio", "Tapia"),
         BEUser(2, 2222, "Francesco", "Tesolato")
     )

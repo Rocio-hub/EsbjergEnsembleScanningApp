@@ -32,6 +32,8 @@ class StatisticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
 
+        pieChartView = findViewById(R.id.pieChart)
+
         var extras: Bundle = intent.extras!!
         allScans = extras.getSerializable("allScans") as MutableList<BEScan>
         user = extras.getSerializable("user") as BEUser
@@ -40,37 +42,15 @@ class StatisticsActivity : AppCompatActivity() {
         textView_user.text = user.firstName.toUpperCase()+" "+user.lastName.toUpperCase()
 
         getMockScans()
-
-        pieChartView = findViewById(R.id.pieChart)
         initPieChart()
         initStats()
     }
 
-    private fun initStats() {
-        totalScans = scanList.size
-        userScans = 0
-        scanList.forEach(){
-            if (it.userId == user.id){
-                userScans++
-            }
-        }
-
-        val df = DecimalFormat("#.#", DecimalFormatSymbols(Locale.ENGLISH)).apply {
-            roundingMode = RoundingMode.HALF_UP
-        }
-
-        userScanPercentage =  df.format((userScans.toDouble()*100/totalScans)).toDouble()
-
-        textView_totalScans.text = "Total Scans: " + totalScans.toString()
-        textView_userScans.text = "Scans made by you: " + userScans.toString()
-        textView_userScanPercent.text = "Scans made by you (%): " + userScanPercentage.toString()+"%"
-    }
-
     private fun getMockScans() {
         scanList = arrayListOf(
-            BEScan(1, 3726, 1, "d5UKu5"),
-            BEScan(2, 3726, 2, "2svnDn"),
-            BEScan(3, 3726, 1, "Pgq2Tf"),
+                BEScan(1, 3726, 1, "d5UKu5"),
+                BEScan(2, 3726, 2, "2svnDn"),
+                BEScan(3, 3726, 1, "Pgq2Tf"),
                 BEScan(4, 3726, 2, "3MApGz"),
                 BEScan(5, 3733, 1, "ZX7eB2"),
                 BEScan(6, 3733, 2, "9VeBnx"),
@@ -92,12 +72,6 @@ class StatisticsActivity : AppCompatActivity() {
         )
     }
 
-    /*fun countMatches(string : String) : Int{
-        val count = "\\bBEScan\\b".toRegex().findAll(string).count()
-        return count
-    }*/
-
-    //GetAllScansByConcertId
     private fun initPieChart() {
         var pie : Pie = AnyChart.pie()
         var dataEntries : ArrayList<DataEntry> = arrayListOf()
@@ -109,14 +83,28 @@ class StatisticsActivity : AppCompatActivity() {
                     dataEntries.add(ValueDataEntry(item.title, it.value.size))
                 }
             }
-
         }
         pie.data(dataEntries)
         pieChartView.setChart(pie)
-
-
     }
 
+    private fun initStats() {
+        totalScans = scanList.size
+        userScans = 0
+        scanList.forEach() {
+            if (it.userId == user.id) {
+                userScans++
+            }
+        }
 
+        val df = DecimalFormat("#.#", DecimalFormatSymbols(Locale.ENGLISH)).apply {
+            roundingMode = RoundingMode.HALF_UP
+        }
 
+        userScanPercentage = df.format((userScans.toDouble() * 100 / totalScans)).toDouble()
+
+        textView_totalScans.text = "Total Scans: " + totalScans.toString()
+        textView_userScans.text = "Scans made by you: " + userScans.toString()
+        textView_userScanPercent.text = "Scans made by you (%): " + userScanPercentage.toString() + "%"
+    }
 }
