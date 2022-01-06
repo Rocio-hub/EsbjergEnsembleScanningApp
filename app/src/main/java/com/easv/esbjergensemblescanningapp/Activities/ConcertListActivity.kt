@@ -43,8 +43,7 @@ class ConcertListActivity : AppCompatActivity() {
         user = extras.getSerializable("user") as BEUser
 
         scanRepo = ScanDAO_Impl(this)
-
-        toolBar.title = "ESBJERG ENSEMBLE"
+        toolBar.title = "ESBJERG ENSEMBLE SCANNING SERVICE"
         setSupportActionBar(toolBar)
 
         listView_concertItem.adapter = ListAdapter(this, allConcerts.toTypedArray())
@@ -129,7 +128,6 @@ class ConcertListActivity : AppCompatActivity() {
         }
 
         val scanDTOJson = gson.toJson(scanDTOList)
-
         val okHttpClient = OkHttpClient()
         val postBody = scanDTOJson.toRequestBody()
         val post = Request.Builder()

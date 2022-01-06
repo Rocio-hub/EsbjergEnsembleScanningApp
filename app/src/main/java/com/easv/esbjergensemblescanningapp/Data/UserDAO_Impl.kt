@@ -18,7 +18,7 @@ class UserDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_USER,
         db?.execSQL("CREATE TABLE ${UserDAO_Impl.DATABASE_USER} (id INTEGER PRIMARY KEY, code INTEGER, firstName INTEGER, lastName TEXT)")
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the Friend table in case the Db version is updated
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) { //drops the table in case the Db version is updated
         db!!.execSQL("DROP TABLE IF EXISTS ${UserDAO_Impl.DATABASE_USER}")
         onCreate(db)
     }
@@ -36,14 +36,6 @@ class UserDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_USER,
         }
     }
 
-    //IMPlEMENTAR
- /*   override fun checkIfUserExists(email: String): BEUser {
-        val db = this.readableDatabase
-        var cursor = db.query("$DATABASE_USER", arrayOf("id","name","email","password","stepCoins","totalSteps","multiplier","fortressLvl","wallLvl","weaponsLvl","picture"),"email LIKE '%$email%'",null,null,null,"id")
-        var result = getByCursor(cursor)
-        return result
-    }*/
-
     private fun getByCursor(cursor: Cursor): List<BEUser> {
         val myList = ArrayList<BEUser>()
         if (cursor.moveToFirst()) {
@@ -57,6 +49,7 @@ class UserDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_USER,
         }
         return myList
     }
+
     override fun insert(u: BEUser) {
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -68,5 +61,4 @@ class UserDAO_Impl (context: Context) : SQLiteOpenHelper(context, DATABASE_USER,
 
         db.insert("${DATABASE_USER}", null, cv)
     }
-
 }

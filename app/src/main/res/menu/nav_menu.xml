@@ -6,4 +6,5 @@
         android:title="Statistics"
         app:showAsAction="never"
         />
+
 </menu>
