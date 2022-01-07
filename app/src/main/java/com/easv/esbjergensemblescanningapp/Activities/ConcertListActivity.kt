@@ -43,7 +43,7 @@ class ConcertListActivity : AppCompatActivity() {
         user = extras.getSerializable("user") as BEUser
 
         scanRepo = ScanDAO_Impl(this)
-        toolBar.title = "ESBJERG ENSEMBLE SCANNING SERVICE"
+        toolBar.title = "EE SCANNING SERVICE"
         setSupportActionBar(toolBar)
 
         listView_concertItem.adapter = ListAdapter(this, allConcerts.toTypedArray())
@@ -101,7 +101,7 @@ class ConcertListActivity : AppCompatActivity() {
                             val userId = jsonArray.getJSONObject(i).getInt("userId")
                             val securityCode = jsonArray.getJSONObject(i).getString("securityCode")
 
-                            newScan.id = id.toInt()
+                            newScan.id = id
                             newScan.concertId = concertId
                             newScan.userId = userId
                             newScan.securityCode = securityCode
@@ -170,13 +170,13 @@ class ConcertListActivity : AppCompatActivity() {
             val itemTitle = resView.findViewById<TextView>(R.id.textView_title)
             itemTitle.text = item.title
             val itemDate = resView.findViewById<TextView>(R.id.textView_date)
-            val year = item.Date.dropLast(6)
-            val month1 = item.Date.dropLast(3)
+            val year = item.date.dropLast(6)
+            val month1 = item.date.dropLast(3)
             val month2 = month1.drop(5)
-            val day = item.Date.drop(8)
+            val day = item.date.drop(8)
             itemDate.text = day+"/"+month2+"/"+year
             val itemTime = resView.findViewById<TextView>(R.id.textView_time)
-            itemTime.text = item.Time.dropLast(3)
+            itemTime.text = item.time.dropLast(3)
 
             return resView
         }

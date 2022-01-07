@@ -5,6 +5,6 @@ import java.io.Serializable
 class BEConcert(
     var id: Int,
     var title: String,
-    var Date: String,
-    var Time: String
+    var date: String,
+    var time: String
 ) : Serializable

@@ -25,8 +25,8 @@ class ConcertInfoActivity : AppCompatActivity(){
         user = extras.getSerializable("user") as BEUser
 
         textView_title.text = selectedConcert.title
-        textView_date.text = selectedConcert.Date
-        textView_time.text = selectedConcert.Time
+        textView_date.text = selectedConcert.date
+        textView_time.text = selectedConcert.time
     }
 
     private fun onClickScan() {

@@ -74,8 +74,8 @@ class LoginActivity: AppCompatActivity() {
 
                             newConcert.id = id.toInt()
                             newConcert.title = title
-                            newConcert.Date = date
-                            newConcert.Time = time
+                            newConcert.date = date
+                            newConcert.time = time
                             allConcerts.add(newConcert)
                         }
                     }

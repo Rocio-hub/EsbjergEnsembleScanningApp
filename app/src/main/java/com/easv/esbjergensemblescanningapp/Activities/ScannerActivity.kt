@@ -119,6 +119,7 @@ class ScannerActivity : AppCompatActivity() {
         scanRepo.getScansByConcertId(eventId).forEach {
             Log.d("CONCERTLIST", it.id.toString())
         }
+        imageView_mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
         textView_result.text = "New scan inserted in db"
     }
 
@@ -127,6 +128,7 @@ class ScannerActivity : AppCompatActivity() {
             1 -> textView_result.text = "The scanned concert ID does not match the chosen concert"
             2 -> textView_result.text = "Code already scanned"
         }
+        imageView_mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
     }
 
     override fun onResume() {

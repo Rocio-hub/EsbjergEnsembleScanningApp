@@ -44,7 +44,7 @@
                 android:layout_marginTop="50dp"
                 android:textSize="35sp"
                 android:fontFamily="@font/armata"
-                android:text="Scanning code..."
+                android:text="@string/scanning_code"
                 android:textColor="@color/black" />
 
         </RelativeLayout>
@@ -78,8 +78,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_baseline_mood_24" />
+                    />
 
             </LinearLayout>
 
